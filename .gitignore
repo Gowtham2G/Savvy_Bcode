@@ -1,0 +1,32 @@
+# ========== Eclipse ==========
+.classpath
+.project
+.settings/
+
+# ========== Build Output ==========
+/target/
+/bin/
+*.class
+
+# ========== Logs ==========
+*.log
+
+# ========== OS Files ==========
+.DS_Store
+Thumbs.db
+
+# ========== Archives ==========
+*.zip
+*.tar
+*.rar
+
+# ========== Environment ==========
+*.env
+
+# ========== IDEs ==========
+.vscode/
+.idea/
+
+# ========== Temporary Files ==========
+*.tmp
+*.bak
