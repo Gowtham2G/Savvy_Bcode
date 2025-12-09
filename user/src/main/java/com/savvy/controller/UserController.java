@@ -1,9 +1,12 @@
 package com.savvy.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.savvy.dto.UserRequestDto;
 import com.savvy.dto.UserResponseDto;
 import com.savvy.service.UserService;
 
