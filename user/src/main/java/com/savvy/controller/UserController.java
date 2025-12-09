@@ -17,8 +17,8 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<UserResponseDto> register(@RequestBody UserRequestDto dto) {
-        return ResponseEntity.ok(userService.register(dto));
+    @GetMapping("/{email}")
+    public ResponseEntity<UserResponseDto> getUserProfile(@PathVariable String email) {
+        return ResponseEntity.ok(userService.getUserProfile(email));
     }
 }

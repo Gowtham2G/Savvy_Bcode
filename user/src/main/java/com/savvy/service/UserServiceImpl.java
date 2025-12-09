@@ -1,40 +1,31 @@
 package com.savvy.service;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import com.savvy.dto.UserRequestDto;
 import com.savvy.dto.UserResponseDto;
 import com.savvy.entity.User;
 import com.savvy.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+ 
+	@Override
+	public UserResponseDto getUserProfile(String email) {
+        // 1. Find the user in the DB using the email passed in
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found for email: " + email));
 
-    @Override
-    public UserResponseDto register(UserRequestDto dto) {
-
-        User user = new User();
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.setRole(dto.getRole());
-        user.setStatus("ACTIVE");
-
-        User savedUser = userRepository.save(user);
-
+        // 2. Convert Entity to DTO and return
         return UserResponseDto.builder()
-                .userId(savedUser.getUserId())   // ✅ WILL WORK NOW
-                .name(savedUser.getName())
-                .email(savedUser.getEmail())
-                .role(savedUser.getRole())
-                .status(savedUser.getStatus())   // ✅ WILL WORK NOW
+                .userId(user.getUserId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .status(user.getStatus())
                 .build();
-    }
+	}
 }
-

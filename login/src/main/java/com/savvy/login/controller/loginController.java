@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.savvy.login.dto.LoginRequestDto;
 import com.savvy.login.dto.LoginResponseDto;
-import com.savvy.login.service.LoginService;
+import com.savvy.login.service.LoginServiceImpl;
 
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
 @RequestMapping("/api")
 public class loginController {
 
-	  private final LoginService loginService;
+	  private final LoginServiceImpl loginService;
 
-	public loginController(LoginService loginService) {
+	public loginController(LoginServiceImpl loginService) {
 		super();
 		this.loginService = loginService;
 	}
