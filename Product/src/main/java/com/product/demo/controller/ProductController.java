@@ -1,12 +1,12 @@
-package com.product.controller;
+package com.product.demo.controller;
 
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.product.dto.ProductRequestDto;
-import com.product.dto.ProductResponseDto;
-import com.product.service.ProductService;
+import com.product.demo.dto.ProductRequestDto;
+import com.product.demo.dto.ProductResponseDto;
+import com.product.demo.service.ProductService;
 
 
 @RestController
@@ -20,7 +20,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ProductResponseDto addProduct(@RequestBody ProductRequestDto dto) {
         return productService.addProduct(dto);
     }

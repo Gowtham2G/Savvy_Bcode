@@ -1,9 +1,9 @@
-package com.product.service;
+package com.product.demo.service;
 
 import java.util.List;
 
-import com.product.dto.ProductRequestDto;
-import com.product.dto.ProductResponseDto;
+import com.product.demo.dto.ProductRequestDto;
+import com.product.demo.dto.ProductResponseDto;
 
 public interface ProductService {
 

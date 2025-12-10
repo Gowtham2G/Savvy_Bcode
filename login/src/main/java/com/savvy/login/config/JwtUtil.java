@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,21 +17,20 @@ import java.util.Map;
 public class JwtUtil {
 
     @Value("${jwt.secret}")
-    private String SECRET_KEY; // must match cart service secret
+    private String SECRET_KEY;
 
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 Hours
 
-    // Generate signing key
+    // FIXED: use UTF-8 to generate EXACT SAME key across all services
     private Key getSignKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
     }
 
-    // Generate JWT token with claims: email, role, userId
+    // Generate JWT token
     public String generateToken(String email, String role, Long userId) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
         claims.put("userId", userId);
-
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -40,17 +40,14 @@ public class JwtUtil {
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-    
 
-
-    // Extract claims from token
+    // Extract all claims
     public Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSignKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-
     }
 
     public String extractEmail(String token) {
@@ -74,7 +71,6 @@ public class JwtUtil {
     }
 
     public boolean validateToken(String token, String email) {
-
         return extractEmail(token).equals(email) && !isTokenExpired(token);
     }
 }

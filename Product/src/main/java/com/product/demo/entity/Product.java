@@ -1,4 +1,4 @@
-package com.product.entity;
+package com.product.demo.entity;
 
 import java.util.List;
 

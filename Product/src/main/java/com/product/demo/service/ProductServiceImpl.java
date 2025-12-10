@@ -1,14 +1,14 @@
-package com.product.service;
+package com.product.demo.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.product.dto.ProductRequestDto;
-import com.product.dto.ProductResponseDto;
-import com.product.entity.Product;
-import com.product.repository.ProductRepository;
+import com.product.demo.dto.ProductRequestDto;
+import com.product.demo.dto.ProductResponseDto;
+import com.product.demo.entity.Product;
+import com.product.demo.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
 

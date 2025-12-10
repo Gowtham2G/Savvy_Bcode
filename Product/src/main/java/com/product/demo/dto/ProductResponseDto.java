@@ -1,4 +1,4 @@
-package com.product.dto;
+package com.product.demo.dto;
 
 import java.util.List;
 import lombok.*;
