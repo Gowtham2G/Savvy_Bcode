@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.savvy.admin.dto.AdminRequestDto;
 import com.savvy.admin.dto.AdminResponseDto;
-import com.savvy.admin.entity.Admin;
+import com.savvy.admin.entity.SystemAdmin;
+import com.savvy.admin.exception.UserAlreadyExistsException;
 import com.savvy.admin.repository.AdminRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,19 +24,27 @@ public class AdminServiceImplementation implements AdminService {
     @Override
     public AdminResponseDto createAdmin(AdminRequestDto requestDto) {
 
-        Admin admin = new Admin();
+        // ✅ 1. HANDLE DUPLICATES GRACEFULLY
+    	if (adminRepository.findByEmail(requestDto.getEmail()).isPresent()) {
+            throw new UserAlreadyExistsException("This email is already registered");
+        }
+        // ✅ 2. BUILD THE ADMIN (Using the Unified Table structure)
+        SystemAdmin admin = new SystemAdmin();
         admin.setUsername(requestDto.getUsername());
         admin.setEmail(requestDto.getEmail());
         admin.setPassword(passwordEncoder.encode(requestDto.getPassword()));
-        admin.setRole("ADMIN");
+        admin.setRole("ADMIN");   // Force role to ADMIN
+        admin.setStatus("ACTIVE"); // Set status so they can login
 
-        adminRepository.save(admin);
+        // ✅ 3. SAVE (ID is generated here)
+        SystemAdmin savedAdmin = adminRepository.save(admin);
 
+        // ✅ 4. RETURN RESPONSE (ID will now be correct, not 0)
         return new AdminResponseDto(
-                admin.getId(),
-                admin.getUsername(),
-                admin.getEmail(),
-                admin.getRole()
+                savedAdmin.getId(),
+                savedAdmin.getUsername(),
+                savedAdmin.getEmail(),
+                savedAdmin.getRole()
         );
     }
 
@@ -54,7 +63,7 @@ public class AdminServiceImplementation implements AdminService {
 
     @Override
     public AdminResponseDto getAdminById(Long id) {
-        Admin admin = adminRepository.findById(id)
+        SystemAdmin admin = adminRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Admin not found with ID: " + id));
 
         return new AdminResponseDto(
